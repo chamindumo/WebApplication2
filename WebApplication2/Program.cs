@@ -1,13 +1,24 @@
-var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+using Microsoft.EntityFrameworkCore;
+using WebApplication2.Data;
+using WebApplication2.Models;
+using Serilog;
+
+
+var builder = WebApplication.CreateBuilder(args);
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -16,29 +27,41 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapGet("/books", async (DataContext context) => await context.Books.ToListAsync());
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/books/{id}", async (DataContext context, int id) => await context.Books.FindAsync(id) is Books item ? Results.Ok(item) : Results.NotFound("Book Not Found"));
+
+
+async Task<List<Books>> GetBooks(DataContext context) => await context.Books.ToListAsync();
+app.MapPost("Add/Book", async (DataContext context, Books item) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    context.Books.Add(item);
+    await context.SaveChangesAsync();
+    return Results.Ok(await GetBooks(context));
+});
+
+//
+app.MapPut("/Book/{id}", async (DataContext context, Books item, int id) =>
+{
+    var bookitem = await context.Books.FindAsync(id);
+    if (bookitem == null) return Results.NotFound("book is not FOu");
+    bookitem.Title = item.Title;
+    bookitem.Author = item.Author;
+    context.Books.Update(item);
+    await context.SaveChangesAsync();
+    return Results.Ok(await GetBooks(context));
+});
+
+
+app.MapPost("/Book/{id}", async (DataContext context, int id) =>
+{
+    var bookitem = await context.Books.FindAsync(id);
+    if (bookitem == null) return Results.NotFound("book is not found");
+    context.Remove(bookitem);
+    await context.SaveChangesAsync();
+    return Results.Ok(await GetBooks(context));
+});
+
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
