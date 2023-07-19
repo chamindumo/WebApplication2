@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 using WebApplication2.Models;
 using Serilog;
-
+using WebApplication2;
+using WebApplication2.Middelware;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -12,11 +13,13 @@ var logger = new LoggerConfiguration()
     .CreateLogger();
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
+//builder.Services.AddTransient<BasicAuthHandler>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+//builder.Services.AddTransient<GlobaleExceptionHandlingMiddelware>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -24,6 +27,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<BasicAuthHandler>("Test");
+//app.UseMiddleware<GlobaleExceptionHandlingMiddelware>();
 
 app.UseHttpsRedirection();
 
@@ -62,6 +68,12 @@ app.MapDelete("/Book/{id}", async (DataContext context, int id) =>
     return Results.Ok(await GetBooks(context));
 });
 
+app.Use(async (context, next) =>
+{
+
+
+    await next.Invoke();
+});
 
 app.Run();
 
