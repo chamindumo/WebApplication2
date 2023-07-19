@@ -53,7 +53,7 @@ app.MapPut("/Book/{id}", async (DataContext context, Books item, int id) =>
 });
 
 
-app.MapPost("/Book/{id}", async (DataContext context, int id) =>
+app.MapDelete("/Book/{id}", async (DataContext context, int id) =>
 {
     var bookitem = await context.Books.FindAsync(id);
     if (bookitem == null) return Results.NotFound("book is not found");
