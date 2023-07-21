@@ -8,6 +8,7 @@ using WebApplication2.Repositery;
 using WebApplication2.Service;
 using WebApplication2.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -38,7 +39,6 @@ var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -51,5 +51,6 @@ app.UseMiddleware<BasicAuthHandler>("Test");
 app.UseHttpsRedirection();
 
 app.Books();
+
 
 app.Run();
