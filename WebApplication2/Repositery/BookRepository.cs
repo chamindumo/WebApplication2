@@ -8,7 +8,7 @@ using WebApplication2.Service;
 
 namespace WebApplication2.Repositery;
 
-public class BookRepository: IBookService
+public   class BookRepository: IBookService
 {
     private readonly DataContext _context;
 
@@ -54,6 +54,10 @@ public class BookRepository: IBookService
         _context.Books.Remove(book);
         await _context.SaveChangesAsync();
     }
+
+
+
+
 }
 
 
