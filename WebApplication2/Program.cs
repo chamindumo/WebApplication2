@@ -7,6 +7,7 @@ using WebApplication2.Middelware;
 using WebApplication2.Repositery;
 using WebApplication2.Service;
 using WebApplication2.DTO;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -25,6 +26,16 @@ builder.Services.AddTransient<IBookService, BookRepository>();
 builder.Services.AddTransient< BookRepository>();
 
 //builder.Services.AddTransient<GlobaleExceptionHandlingMiddelware>();
+
+
+var mapperConfig = new MapperConfiguration(cfg =>
+{
+    cfg.CreateMap<BookInputDTO, Books>();
+    cfg.CreateMap<Books, BookOutputDTO>();
+});
+
+var mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
