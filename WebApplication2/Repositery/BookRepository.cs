@@ -39,6 +39,7 @@ public   class BookRepository: IBookService
         if (existingBook == null)
             return;
 
+        existingBook.Id = book.Id;
         existingBook.Title = book.Title;
         existingBook.Author = book.Author;
 

@@ -11,5 +11,7 @@ namespace WebApplication2.Data
         }
 
         public DbSet<Books> Books { get; set; }
+        public DbSet<Product> Product { get; set; }
+
     }
 }
