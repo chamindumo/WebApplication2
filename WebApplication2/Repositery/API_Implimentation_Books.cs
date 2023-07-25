@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using WebApplication2.DTO;
 using WebApplication2.Models;
-using WebApplication2.Service;
 
 namespace WebApplication2.Repositery
 {
-    public static class Implimentation
+    public static class API_Implimentation_Books
     {
         public static void Books(this IEndpointRouteBuilder app)
         {
@@ -23,23 +22,23 @@ namespace WebApplication2.Repositery
                 var book = await repository.GetBookByIdAsync(id);
                 return book is not null ? Results.Ok(book) : Results.NotFound("Book Not Found");
             });
-            app.MapPost("Add/Book", async (HttpContext httpContext, BookInputDTO inputDTO) =>
+            app.MapPost("Add/Book", async (HttpContext httpContext, BookDTO inputDTO) =>
             {
                 var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
-                var repository = httpContext.RequestServices.GetRequiredService<IBookService>();
+                var repository = httpContext.RequestServices.GetRequiredService<IBookRepositery>();
 
                 var book = mapper.Map<Books>(inputDTO);
 
                 await repository.AddBookAsync(book);
 
-                var outputDTO = mapper.Map<BookOutputDTO>(book);
+                var outputDTO = mapper.Map<BookDTO>(book);
                 return Results.Ok(outputDTO);
             });
 
-            app.MapPut("/Book/{id}", async (HttpContext httpContext, BookInputDTO inputDTO, int id) =>
+            app.MapPut("/Book/{id}", async (HttpContext httpContext, BookDTO inputDTO, int id) =>
             {
                 var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
-                var repository = httpContext.RequestServices.GetRequiredService<IBookService>();
+                var repository = httpContext.RequestServices.GetRequiredService<IBookRepositery>();
 
                 var existingBook = await repository.GetBookByIdAsync(id);
                 if (existingBook == null)
@@ -51,7 +50,7 @@ namespace WebApplication2.Repositery
 
                 await repository.UpdateBookAsync(id, existingBook);
 
-                var outputDTO = mapper.Map<BookOutputDTO>(existingBook);
+                var outputDTO = mapper.Map<BookDTO>(existingBook);
                 return Results.Ok(outputDTO);
             });
 

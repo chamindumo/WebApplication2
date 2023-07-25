@@ -5,9 +5,9 @@ namespace WebApplication2.Service
 {
     public class MyServices
     {
-        private readonly IMapper _mapper;
+        private readonly AutoMapper.IMapper _mapper;
 
-        public MyServices(IMapper mapper)
+        public MyServices(AutoMapper.IMapper mapper)
         {
             _mapper = mapper;
         }

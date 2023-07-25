@@ -5,7 +5,6 @@ using Serilog;
 using WebApplication2;
 using WebApplication2.Middelware;
 using WebApplication2.Repositery;
-using WebApplication2.Service;
 using WebApplication2.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +13,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
-using WebApplication2.Profiles;
+using WebApplication2.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -28,13 +27,17 @@ builder.Logging.AddSerilog(logger);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddAutoMapper(typeof(Books), typeof(ProductProfile));
+builder.Services.AddAutoMapper(typeof(Books), typeof(ProductService));
 
 
-builder.Services.AddTransient<IBookService, BookRepository>(); 
+builder.Services.AddTransient<IBookRepositery, BookRepository>(); 
 builder.Services.AddTransient< BookRepository>();
-builder.Services.AddTransient<IProductService, ProductRepositery>();
+builder.Services.AddTransient<IProductRepositery, ProductRepositery>();
 builder.Services.AddTransient<ProductRepositery>();
+
+
+
+
 
 //builder.Services.AddTransient<GlobaleExceptionHandlingMiddelware>();
 

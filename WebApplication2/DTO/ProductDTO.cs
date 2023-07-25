@@ -1,6 +1,6 @@
 ﻿namespace WebApplication2.DTO
 {
-    public class ProductInputDTO
+    public class ProductDTO
     {
         public int Id { get; set; }
         public string Names { get; set; }

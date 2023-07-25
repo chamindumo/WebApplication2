@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-namespace WebApplication2.Service
+namespace WebApplication2.Repositery
 {
-    public interface IBookService
+    public interface IBookRepositery
     {
         Task<List<Books>> GetAllBooksAsync();
         Task<Books> GetBookByIdAsync(int id);

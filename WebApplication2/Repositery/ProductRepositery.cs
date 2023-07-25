@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 using WebApplication2.Models;
-using WebApplication2.Service;
 
 namespace WebApplication2.Repositery
 {
 
-    public class ProductRepositery: IProductService
+    public class ProductRepositery: IProductRepositery
         {
             private readonly DataContext _context;
 

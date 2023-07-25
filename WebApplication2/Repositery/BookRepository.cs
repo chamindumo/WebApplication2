@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 using WebApplication2.Models;
-using WebApplication2.Service;
 
 namespace WebApplication2.Repositery;
 
-public   class BookRepository: IBookService
+public   class BookRepository: IBookRepositery
 {
     private readonly DataContext _context;
 
