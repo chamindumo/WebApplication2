@@ -5,7 +5,9 @@ namespace WebApplication2.Service
 {
     public interface IProductService
     {
-        Product Map(ProductDTO source);
-        ProductDTO Map(Product source);
+        void Create(ProductDTO productDto);
+
+        void Update(ProductDTO productDto);
+
     }
 }

@@ -3,9 +3,10 @@ using WebApplication2.Models;
 
 namespace WebApplication2.Service
 {
-    public interface IBookServices
+    public interface IBookService
     {
-        Books Map(BookDTO source);
-        BookDTO Map(Books source);
+        void Create(BookDTO bookDTO);
+
+        void Update(BookDTO bookDTO);
     }
 }
