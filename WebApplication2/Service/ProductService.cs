@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using java.awt.print;
+using WebApplication2.Data;
 using WebApplication2.DTO;
 using WebApplication2.Models;
 using WebApplication2.Profiles;
@@ -7,31 +8,32 @@ using WebApplication2.Repositery;
 
 namespace WebApplication2.Service
 {
-    public class ProductService : Profile, IProductService
+    public class ProductService : IProductService
     {
         private readonly IMapper _mapper;
-        private readonly IProductRepositery _productRepository;
+        private readonly ProductRepositery _productRepository;
+        private readonly DataContext _context;
 
-
-        public ProductService()
+        public ProductService(IMapper mapper, ProductRepositery productRepository, DataContext context)
         {
-
-
-            CreateMap<ProductDTO, Product>();
-            CreateMap<Product, ProductDTO>();
-
+            _mapper = mapper;
+            _productRepository = productRepository;
+            _context = context;
         }
 
-        public void Create(ProductDTO productDto)
+        public async Task Create(ProductDTO productDTO)
         {
-            var product = _mapper.Map<Product>(productDto);
-            _productRepository.AddProductAsync(product);
+            var product = _mapper.Map<ProductDTO, Product>(productDTO);
+           
+           _productRepository.AddProductAsync(product);
         }
 
-        public void Update(ProductDTO productDto)
+        public async Task Update(int id, ProductDTO productDTO)
         {
-            var product = _mapper.Map<Product>(productDto);
-            int id = product.Id;
+            var product = _mapper.Map<Product>(productDTO);
+         
+
+
             _productRepository.UpdateProductAsync(id, product);
 
         }

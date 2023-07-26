@@ -14,6 +14,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using WebApplication2.Service;
+using ikvm.runtime;
+using WebApplication2.Profiles;
+using sun.awt;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -30,14 +34,18 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(build
 builder.Services.AddAutoMapper(typeof(Books), typeof(ProductService));
 
 
+
+
+
 builder.Services.AddTransient<IBookRepositery, BookRepository>(); 
 builder.Services.AddTransient< BookRepository>();
+
+
 builder.Services.AddTransient<IProductRepositery, ProductRepositery>();
 builder.Services.AddTransient<ProductRepositery>();
 
-
-
-
+builder.Services.AddTransient<IBookService, BookService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 //builder.Services.AddTransient<GlobaleExceptionHandlingMiddelware>();
 
@@ -51,7 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<BasicAuthHandler>("Test");
+//app.UseMiddleware<BasicAuthHandler>("Test");
 //app.UseMiddleware<GlobaleExceptionHandlingMiddelware>();
 
 app.UseHttpsRedirection();
@@ -59,6 +67,9 @@ app.UseHttpsRedirection();
 app.Books();
 
 app.Product();
+
+
+
 
 
 

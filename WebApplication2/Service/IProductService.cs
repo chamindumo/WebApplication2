@@ -5,9 +5,8 @@ namespace WebApplication2.Service
 {
     public interface IProductService
     {
-        void Create(ProductDTO productDto);
-
-        void Update(ProductDTO productDto);
+        Task Create(ProductDTO productDTO);
+        Task Update(int id, ProductDTO productDTO);
 
     }
 }

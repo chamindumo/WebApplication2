@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using com.sun.org.apache.xpath.@internal.operations;
+using com.sun.xml.@internal.bind.v2.model.core;
+using java.awt.print;
+using WebApplication2.Data;
 using WebApplication2.DTO;
 using WebApplication2.Models;
 using WebApplication2.Repositery;
@@ -6,28 +10,36 @@ using WebApplication2.Service;
 
 namespace WebApplication2.Profiles
 {
-    public class BookService : Profile, IBookService
+    public class BookService : IBookService
     {
         private readonly IMapper _mapper;
-        private readonly IBookRepositery _bookRepository;
-        public BookService()
-        {
-            CreateMap<BookDTO, Books>();
-            CreateMap<Books, BookDTO>();
+        private readonly BookRepository _bookRepository;
+        private readonly DataContext _context;
 
-        }
 
-        public void Create(BookDTO bookDTO)
+        public BookService(IMapper mapper, BookRepository bookRepository, DataContext context)
         {
-            var book = _mapper.Map<Books>(bookDTO);
+            _mapper = mapper;
+            _bookRepository = bookRepository;
+            _context = context;
+        }    
+
+       public async Task Create(BookDTO bookDTO)
+        {
+            var book = _mapper.Map<BookDTO, Books>(bookDTO);
+           
+
             _bookRepository.AddBookAsync(book);
         }
 
-        public void Update(BookDTO bookDTO)
+       public async Task Update(int id , BookDTO bookDTO)
         {
             var book = _mapper.Map<Books>(bookDTO);
-            int id = book.Id;
-            _bookRepository.UpdateBookAsync(id,book);
+          
+
+            _bookRepository.UpdateBookAsync(id, book);
+
+
         }
     }
 }

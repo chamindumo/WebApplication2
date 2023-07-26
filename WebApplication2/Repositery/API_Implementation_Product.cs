@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 using WebApplication2.DTO;
 using WebApplication2.Models;
+using WebApplication2.Service;
 
 namespace WebApplication2.Repositery
 {
@@ -27,22 +28,22 @@ namespace WebApplication2.Repositery
             app.MapPost("Add/product", async (HttpContext httpContext, ProductDTO inputDTO) =>
             {
                 var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
-                var repository = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
+                var repository = httpContext.RequestServices.GetRequiredService<IProductService>();
 
-                var product = mapper.Map<Product>(inputDTO);
+               
 
-                await repository.AddProductAsync(product);
+                await repository.Create(inputDTO);
 
-                var outputDTO = mapper.Map<ProductDTO>(product);
-                return Results.Ok(outputDTO);
+                return Results.Ok(inputDTO);
             });
 
             app.MapPut("/product/{id}", async (HttpContext httpContext, ProductDTO inputDTO, int id) =>
             {
                 var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
-                var repository = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
+                var repository1 = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
+                var repository2 = httpContext.RequestServices.GetRequiredService<IProductService>();
 
-                var existingproduct = await repository.GetProducByIdAsync(id);
+                var existingproduct = await repository1.GetProducByIdAsync(id);
                 if (existingproduct == null)
                 {
                     return Results.NotFound("product not found");
@@ -50,10 +51,9 @@ namespace WebApplication2.Repositery
 
                 mapper.Map(inputDTO, existingproduct);
 
-                await repository.UpdateProductAsync(id, existingproduct);
+                await repository2.Update(id, inputDTO);
 
-                var outputDTO = mapper.Map<ProductDTO>(existingproduct);
-                return Results.Ok(outputDTO);
+                return Results.Ok(inputDTO);
             });
 
 
