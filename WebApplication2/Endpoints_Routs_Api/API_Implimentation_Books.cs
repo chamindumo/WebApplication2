@@ -28,7 +28,7 @@ namespace WebApplication2.Endpoints_Routs_Api
             });
             app.MapPost("Add/Book", async (HttpContext httpContext, BookDTO inputDTO) =>
             {
-               // var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
+                //var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
                 var repository = httpContext.RequestServices.GetRequiredService<IBookRepositery>();
                 var repository1 = httpContext.RequestServices.GetRequiredService<IBookService>();
 

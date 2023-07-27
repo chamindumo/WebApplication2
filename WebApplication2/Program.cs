@@ -32,7 +32,7 @@ builder.Logging.AddSerilog(logger);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddAutoMapper(typeof(Books), typeof(ProductService));
+builder.Services.AddAutoMapper(typeof(Books), typeof(Product));
 
 
 
@@ -46,8 +46,8 @@ builder.Services.AddTransient<IProductRepositery, ProductRepositery>();
 builder.Services.AddTransient<ProductRepositery>();
 
 builder.Services.AddTransient<IBookService, BookServices1>();
-builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<ProductService>();
+builder.Services.AddTransient<IProductService, ProductService1>();
+builder.Services.AddTransient<ProductService1>();
 builder.Services.AddTransient<BookServices1>();
 
 //builder.Services.AddTransient<GlobaleExceptionHandlingMiddelware>();

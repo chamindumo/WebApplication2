@@ -15,7 +15,7 @@ namespace WebApplication2.Endpoints_Routs_Api
         {
             app.MapGet("/product", async (HttpContext httpContext) =>
             {
-                var repository = httpContext.RequestServices.GetRequiredService<ProductRepositery>();
+                var repository = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
                 var books = await repository.GetAllProductsAsync();
                 return Results.Ok(books);
             });
@@ -23,7 +23,7 @@ namespace WebApplication2.Endpoints_Routs_Api
 
             app.MapGet("/product/{id}", async (HttpContext httpContext, int id) =>
             {
-                var repository = httpContext.RequestServices.GetRequiredService<ProductRepositery>();
+                var repository = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
                 var product = await repository.GetProducByIdAsync(id);
                 return product is not null ? Results.Ok(product) : Results.NotFound("product Not Found");
             });
@@ -31,7 +31,7 @@ namespace WebApplication2.Endpoints_Routs_Api
             {
                 var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
                 var repository = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
-                var repository1 = httpContext.RequestServices.GetRequiredService<ProductService>();
+                var repository1 = httpContext.RequestServices.GetRequiredService<IProductService>();
 
                 /*var product = mapper.Map<Product>(inputDTO);
 
@@ -49,7 +49,7 @@ namespace WebApplication2.Endpoints_Routs_Api
             {
                 var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
                 var repository = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
-                var repository1 = httpContext.RequestServices.GetRequiredService<ProductService>();
+                var repository1 = httpContext.RequestServices.GetRequiredService<IProductService>();
 
                 var existingproduct = await repository.GetProducByIdAsync(id);
                 if (existingproduct == null)
@@ -74,7 +74,7 @@ namespace WebApplication2.Endpoints_Routs_Api
 
             app.MapDelete("/product/{id}", async (HttpContext httpContext, int id) =>
             {
-                var repository = httpContext.RequestServices.GetRequiredService<ProductRepositery>();
+                var repository = httpContext.RequestServices.GetRequiredService<IProductRepositery>();
                 await repository.DeleteProductAsync(id);
                 return Results.Ok(await repository.GetAllProductsAsync());
             });

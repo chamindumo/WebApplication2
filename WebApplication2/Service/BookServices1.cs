@@ -28,7 +28,7 @@ namespace WebApplication2.Service
 
         public void Update(int id, BookDTO bookDTO)
         {
-            var book = _mapper.Map<BookDTO, Books>(bookDTO);
+            var book = _mapper.Map< Books>(bookDTO);
 
 
             _bookRepository.UpdateBookAsync(id, book);
