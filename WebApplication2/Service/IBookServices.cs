@@ -5,7 +5,8 @@ namespace WebApplication2.Service
 {
     public interface IBookService
     {
-        Task Create(BookDTO bookDTO);
-        Task Update(int id , BookDTO bookDTO);
+        void Create(BookDTO bookDTO);
+        void Update(int id , BookDTO bookDTO);
+
     }
 }

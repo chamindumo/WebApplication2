@@ -18,6 +18,7 @@ using ikvm.runtime;
 using WebApplication2.Profiles;
 using sun.awt;
 using System.Configuration;
+using WebApplication2.Endpoints_Routs_Api;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -44,8 +45,10 @@ builder.Services.AddTransient< BookRepository>();
 builder.Services.AddTransient<IProductRepositery, ProductRepositery>();
 builder.Services.AddTransient<ProductRepositery>();
 
-builder.Services.AddTransient<IBookService, BookService>();
+builder.Services.AddTransient<IBookService, BookServices1>();
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<ProductService>();
+builder.Services.AddTransient<BookServices1>();
 
 //builder.Services.AddTransient<GlobaleExceptionHandlingMiddelware>();
 

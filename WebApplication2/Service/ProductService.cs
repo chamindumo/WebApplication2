@@ -21,19 +21,17 @@ namespace WebApplication2.Service
             _context = context;
         }
 
-        public async Task Create(ProductDTO productDTO)
+        public void  Create(ProductDTO productDTO)
         {
             var product = _mapper.Map<ProductDTO, Product>(productDTO);
            
-           _productRepository.AddProductAsync(product);
+            _productRepository.AddProductAsync(product);
         }
 
-        public async Task Update(int id, ProductDTO productDTO)
+        public void  Update(int id, ProductDTO productDTO)
         {
             var product = _mapper.Map<Product>(productDTO);
          
-
-
             _productRepository.UpdateProductAsync(id, product);
 
         }

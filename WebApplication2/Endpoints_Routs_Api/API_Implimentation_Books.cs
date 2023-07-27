@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using java.awt.print;
 using WebApplication2.DTO;
 using WebApplication2.Models;
+using WebApplication2.Profiles;
+using WebApplication2.Repositery;
 using WebApplication2.Service;
 
-namespace WebApplication2.Repositery
+namespace WebApplication2.Endpoints_Routs_Api
 {
     public static class API_Implimentation_Books
     {
@@ -25,34 +28,46 @@ namespace WebApplication2.Repositery
             });
             app.MapPost("Add/Book", async (HttpContext httpContext, BookDTO inputDTO) =>
             {
-                var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
-                var repository = httpContext.RequestServices.GetRequiredService<IBookService>();
+               // var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
+                var repository = httpContext.RequestServices.GetRequiredService<IBookRepositery>();
+                var repository1 = httpContext.RequestServices.GetRequiredService<IBookService>();
 
+                
+                
+                /*var book = mapper.Map<Books>(inputDTO);
 
-                await repository.Create(inputDTO);
+                await repository.AddBookAsync(book);
 
+                var outputDTO = mapper.Map<BookDTO>(book);
+                return Results.Ok(outputDTO);*/
+
+                repository1.Create(inputDTO);
                 return Results.Ok(inputDTO);
             });
 
             app.MapPut("/Book/{id}", async (HttpContext httpContext, BookDTO inputDTO, int id) =>
             {
                 var mapper = httpContext.RequestServices.GetRequiredService<IMapper>();
-                var repository1 = httpContext.RequestServices.GetRequiredService<IBookRepositery>();
-                var repository2 = httpContext.RequestServices.GetRequiredService<IBookService>();
+                var repository = httpContext.RequestServices.GetRequiredService<IBookRepositery>();
+                var repository1 = httpContext.RequestServices.GetRequiredService<IBookService>();
 
-                var existingBook = await repository1.GetBookByIdAsync(id);
+                var existingBook = await repository.GetBookByIdAsync(id);
                 if (existingBook == null)
                 {
                     return Results.NotFound("Book not found");
                 }
 
+                /*mapper.Map(inputDTO, existingBook);
 
-                await repository2.Update(id, inputDTO);
+                await repository.UpdateBookAsync(id, existingBook);
 
+                var outputDTO = mapper.Map<BookDTO>(existingBook);
+                return Results.Ok(outputDTO);*/
+
+                repository1.Update(id ,inputDTO);
                 return Results.Ok(inputDTO);
+
             });
-
-
 
             app.MapDelete("/Book/{id}", async (HttpContext httpContext, int id) =>
             {
@@ -61,6 +76,6 @@ namespace WebApplication2.Repositery
                 return Results.Ok(await repository.GetAllBooksAsync());
             });
         }
-    
+
     }
 }
