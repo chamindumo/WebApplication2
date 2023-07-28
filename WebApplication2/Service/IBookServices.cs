@@ -1,4 +1,5 @@
-﻿using WebApplication2.DTO;
+﻿using java.awt.print;
+using WebApplication2.DTO;
 using WebApplication2.Models;
 
 namespace WebApplication2.Service
@@ -7,6 +8,9 @@ namespace WebApplication2.Service
     {
         void Create(BookDTO bookDTO);
         void Update(int id , BookDTO bookDTO);
+
+        Books GetAllBooks();
+        Books GetBookById(int id);
 
     }
 }

@@ -9,11 +9,11 @@ namespace WebApplication2.Service
     public class ProductService1 : IProductService
     {
         private readonly IMapper _mapper;
-        private readonly ProductRepositery _productRepository;
+        private readonly IProductRepositery _productRepository;
         private readonly DataContext _context;
 
 
-        public ProductService1(IMapper mapper, ProductRepositery productRepository, DataContext context)
+        public ProductService1(IMapper mapper, IProductRepositery productRepository, DataContext context)
         {
             _mapper = mapper;
             _productRepository = productRepository;

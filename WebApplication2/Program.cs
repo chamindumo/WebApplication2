@@ -39,16 +39,13 @@ builder.Services.AddAutoMapper(typeof(Books), typeof(Product));
 
 
 builder.Services.AddTransient<IBookRepositery, BookRepository>(); 
-builder.Services.AddTransient< BookRepository>();
 
 
 builder.Services.AddTransient<IProductRepositery, ProductRepositery>();
-builder.Services.AddTransient<ProductRepositery>();
 
 builder.Services.AddTransient<IBookService, BookServices1>();
 builder.Services.AddTransient<IProductService, ProductService1>();
-builder.Services.AddTransient<ProductService1>();
-builder.Services.AddTransient<BookServices1>();
+
 
 //builder.Services.AddTransient<GlobaleExceptionHandlingMiddelware>();
 
